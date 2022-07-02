@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h1>我是微应用vue  Home页</h1>
-        <div @click="goMain">回主应用首页</div>
+        <h1>我是微应用vue  About页</h1>
+        <div @click="goHome">回Home</div>
     </div>
     
 </template>
@@ -17,13 +17,12 @@ export default {
 
         const router = useRouter()
 
-        const goMain = () => {
-            console.log(13)
-            router.push('/about')
+        const goHome = () => {
+            router.push('/')
         }
 
         return {
-            goMain
+            goHome
         }
     },
 };
