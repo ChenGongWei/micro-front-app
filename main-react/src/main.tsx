@@ -7,7 +7,7 @@ import start from './micro'
 import './index.css'
 
 // 启动 qiankun
-start()
+// start()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

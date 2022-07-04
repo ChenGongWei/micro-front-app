@@ -10,7 +10,7 @@ function App() {
                     <Routes />
                 </React.Suspense>
             </BrowserRouter>
-            <div id="frame"></div>
+            
         </>
     );
 }
