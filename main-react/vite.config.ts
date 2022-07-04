@@ -11,6 +11,8 @@ export default defineConfig({
             "@": resolve(__dirname, 'src'),
             "@/pages": resolve(__dirname, 'src/pages'),
             "@/routes": resolve(__dirname, 'src/routes'),
+            "@/components": resolve(__dirname, 'src/components'),
+            "@/assets": resolve(__dirname, 'src/assets'),
         }
     },
     plugins: [react()],

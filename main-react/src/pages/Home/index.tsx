@@ -1,19 +1,42 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import style from './style.module.scss'
 
 const Home: React.FC = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+
+    const routeList = [
+        {
+            title: 'React Demo',
+            baseUrl: '',
+            children: [{
+                title: '第一个React Demo',
+                url: '/about'
+            }]
+        }, 
+        {
+            title: 'Vue Demo',
+            baseUrl: '/vue',
+            children: [{
+                title: '第一个Vue Demo',
+                url: '/about'
+            }]
+        }
+    ]
 
     return (
-        <div style={{ backgroundColor: "pink" }}>
-            <h1>我是Home页</h1>
-            <div
-                onClick={() => {
-                    navigate("/vue");
-                }}
-            >
-                打开微应用
-            </div>
+        <div className={style.home}>
+            <h2 className={style.title}>首页</h2>
+            {routeList.map(route => (
+                <div key={route.baseUrl} className={style.block}>
+                    <h3 className={style.subTitle}>{route.title}</h3>
+                    <div className={style.list}>
+                        {route.children.map(item => (
+                            <div key={item.url} className={style.item} onClick={() => navigate(`${route.baseUrl}${item.url}`)}>{item.title}</div>
+                        ))}
+                    </div>
+                </div>
+            ))}
         </div>
     );
 };

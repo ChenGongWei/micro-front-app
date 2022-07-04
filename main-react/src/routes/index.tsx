@@ -11,7 +11,7 @@ export const routes = [
         element: <About />,
     },
     {
-        path: '/vue',
+        path: '/vue/*',
         element: <Vue />,
     },
     {
