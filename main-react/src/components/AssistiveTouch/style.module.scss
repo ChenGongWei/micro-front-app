@@ -1,0 +1,15 @@
+.touch {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: 20px;
+    bottom: 120px;
+    width: 65px;
+    height: 65px;
+    z-index: 10;
+    background-color: #fff;
+    box-shadow: 0 0 2px 1px #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
