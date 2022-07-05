@@ -4,6 +4,7 @@ import { useRoutes } from 'react-router-dom'
 const Home = React.lazy(() => import('@/pages/Home')) 
 const About = React.lazy(() => import('@/pages/About')) 
 const DragUpload = React.lazy(() => import('@/pages/DragUpload')) 
+const MineSweeping = React.lazy(() => import('@/pages/MineSweeping')) 
 const Vue = React.lazy(() => import('@/pages/Vue')) 
 
 export const routes = [
@@ -14,6 +15,10 @@ export const routes = [
     {
         path: '/dragUpload',
         element: <DragUpload />,
+    },
+    {
+        path: '/mineSweeping',
+        element: <MineSweeping />,
     },
     {
         path: '/vue/*',

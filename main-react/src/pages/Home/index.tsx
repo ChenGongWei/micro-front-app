@@ -13,6 +13,9 @@ const Home: React.FC = () => {
                 title: '拖拽上传文件',
                 url: '/dragUpload'
             }, {
+                title: '扫雷',
+                url: '/mineSweeping'
+            }, {
                 title: 'About页',
                 url: '/about'
             }]

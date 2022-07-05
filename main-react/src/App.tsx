@@ -1,6 +1,6 @@
 import React from "react"
 import { BrowserRouter } from "react-router-dom"
-import AssistiveTouch from "./components/AssistiveTouch";
+import AssistiveTouch from "./components/AssistiveTouch"
 import Routes from "@/routes"
 
 function App() {
