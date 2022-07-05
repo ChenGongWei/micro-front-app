@@ -10,8 +10,8 @@ const Home: React.FC = () => {
             title: 'React Demo',
             baseUrl: '',
             children: [{
-                title: '第一个React Demo',
-                url: '/about'
+                title: '拖拽上传文件',
+                url: '/dragUpload'
             }]
         }, 
         {
