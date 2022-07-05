@@ -12,8 +12,11 @@ const Home: React.FC = () => {
             children: [{
                 title: '拖拽上传文件',
                 url: '/dragUpload'
+            }, {
+                title: 'About页',
+                url: '/about'
             }]
-        }, 
+        },
         {
             title: 'Vue Demo',
             baseUrl: '/vue',
@@ -32,7 +35,13 @@ const Home: React.FC = () => {
                     <h3 className={style.subTitle}>{route.title}</h3>
                     <div className={style.list}>
                         {route.children.map(item => (
-                            <div key={item.url} className={style.item} onClick={() => navigate(`${route.baseUrl}${item.url}`)}>{item.title}</div>
+                            <div
+                                key={item.url}
+                                className={style.item}
+                                onClick={() => navigate(`${route.baseUrl}${item.url}`)}
+                            >
+                                &gt; {item.title} &lt;
+                            </div>
                         ))}
                     </div>
                 </div>
