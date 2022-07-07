@@ -3,6 +3,8 @@
  */
 import React, { useState, useRef } from 'react'
 import { CloudUploadOutlined } from '@ant-design/icons'
+import { Progress, message } from 'antd'
+import axios from '@/api/request'
 import style from './style.module.scss'
 
 const DragUpload: React.FC = () => {
@@ -14,7 +16,10 @@ const DragUpload: React.FC = () => {
     const inpEl = useRef<HTMLInputElement>(null)
 
     /** 上传文件 */
-    const [files, setFiles] = useState<string[]>([])
+    const [files, setFiles] = useState<{name: string, url: string}[]>([])
+
+    /** 进度条 */
+    const [progress, setProgress] = useState(0)
 
     const fileChange = (e: any) => {
         console.log(e, 123)
@@ -25,23 +30,41 @@ const DragUpload: React.FC = () => {
         fileReader.onload = e => {
             // 获取得到的结果
             const data = e.target!.result
-            setFiles([...files, data as string])
+            setFiles([...files, { name: fileList[0].name, url: data as string }])
+            setProgress(0)
+            uploadFile(fileList[0])
         }
     }
 
-    // const uploadFile = async (file: File) => {
-    //     const form = new FormData()
-    //     form.append('name', 'file')
-    //     form.append('file', file)
-    //     const res = await axios.post('/uploadfile', form, {
-    //         onUploadProgress: progress => {
-    //             console.log(progress, 123)
-    //             setProgress(Number(
-    //                 ((progress.loaded / progress.total) * 100).toFixed(2)
-    //             ))
-    //         }
-    //     })
-    // }
+    /** 上传文件 */
+    const uploadFile = async (file: File) => {
+        try {
+            const form = new FormData()
+            form.append('name', 'file')
+            form.append('file', file)
+            const timer = setInterval(() => {
+                const size = Math.floor(Math.random() * 15) + 5
+                if(progress + size >= 100) {
+                    setProgress(99)
+                }
+                setProgress(p => p + size)
+            }, 400)
+            await axios.post('/upload', form, {
+                // onUploadProgress: progress => {
+                //     console.log(progress, 123)
+                //     setProgress(Number(
+                //         ((progress.loaded / progress.total) * 100).toFixed(2)
+                //     ))
+                // }
+            })
+            clearInterval(timer)
+            setProgress(100)
+            message.success('上传成功')
+        } catch (error) {
+            console.log(error)
+            message.error('上传失败，请重试')
+        }
+    }
 
     /** 被拖拽的文件进入容器 */
     const dragOver = (e: any) => {
@@ -68,7 +91,9 @@ const DragUpload: React.FC = () => {
         fileReader.onload = e => {
             // 获取得到的结果
             const data = e.target!.result
-            setFiles([...files, data as string])
+            setFiles([...files, { name: uploadFile.name, url: data as string }])
+            setProgress(0)
+            uploadFile(uploadFile)
         }
     }
 
@@ -93,10 +118,18 @@ const DragUpload: React.FC = () => {
                 <input type="file" ref={inpEl} onChange={fileChange}></input>
             </div>
             <div className={style.preview}>
-                {files.map(file => (
-                    <img key={file} src={file} alt="" />
+                {files.map((file, idx) => (
+                    <div key={file.url} className={style.item}>
+                        <img src={file.url} alt="" />
+                        <div className={style.info}>
+                            <div className={style.name}>{file.name}</div>
+                            <Progress percent={idx === files.length - 1 ? progress : 100} />
+                        </div>
+                    </div>
+                    
                 ))}
             </div>
+            
         </div>
     )
 }

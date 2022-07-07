@@ -13,6 +13,7 @@ export default defineConfig({
             "@/routes": resolve(__dirname, 'src/routes'),
             "@/components": resolve(__dirname, 'src/components'),
             "@/assets": resolve(__dirname, 'src/assets'),
+            "@/api": resolve(__dirname, 'src/api'),
         }
     },
     plugins: [react()],
