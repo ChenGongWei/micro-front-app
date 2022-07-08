@@ -39,17 +39,18 @@ const DragUpload: React.FC = () => {
     /** 上传文件 */
     const uploadFile = async (file: File) => {
         setFiles([...files, { name: file.name, url: '' }])
+        const timer = setInterval(() => {
+            const size = Math.floor(Math.random() * 15) + 5
+            if(progress + size >= 100) {
+                setProgress(99)
+            }
+            setProgress(p => p + size)
+        }, 400)
         try {
             const form = new FormData()
             form.append('name', 'file')
             form.append('file', file)
-            const timer = setInterval(() => {
-                const size = Math.floor(Math.random() * 15) + 5
-                if(progress + size >= 100) {
-                    setProgress(99)
-                }
-                setProgress(p => p + size)
-            }, 400)
+            
             const { data:res } = await axios.post('/upload', form, {
                 // onUploadProgress: progress => {
                 //     console.log(progress, 123)
@@ -59,10 +60,9 @@ const DragUpload: React.FC = () => {
                 // }
             })
             console.log(res, 'res')
-            clearInterval(timer)
             setFiles(files => files.map(item => {
                 if (item.name === file.name ) {
-                    return ({ ...item, url: res.data.url  })
+                    return ({ ...item, url: 'http://localhost:3003' + res.data.url  })
                 }
                 return item
             }))
@@ -70,7 +70,10 @@ const DragUpload: React.FC = () => {
             message.success('上传成功')
         } catch (error) {
             console.log(error)
+            setFiles(files => files.filter(item => item.name !== file.name))
             message.error('上传失败，请重试')
+        } finally {
+            clearInterval(timer)
         }
     }
 
