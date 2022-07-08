@@ -24,20 +24,21 @@ const DragUpload: React.FC = () => {
     const fileChange = (e: any) => {
         console.log(e, 123)
         const fileList = (e.target as HTMLInputElement).files || []
+        uploadFile(fileList[0])
 
-        const fileReader = new FileReader()
-        fileReader.readAsDataURL(fileList[0])
-        fileReader.onload = e => {
-            // 获取得到的结果
-            const data = e.target!.result
-            setFiles([...files, { name: fileList[0].name, url: data as string }])
-            setProgress(0)
-            uploadFile(fileList[0])
-        }
+        // const fileReader = new FileReader()
+        // fileReader.readAsDataURL(fileList[0])
+        // fileReader.onload = e => {
+        //     // 获取得到的结果
+        //     const data = e.target!.result
+        //     setProgress(0)
+        //     uploadFile(fileList[0])
+        // }
     }
 
     /** 上传文件 */
     const uploadFile = async (file: File) => {
+        setFiles([...files, { name: file.name, url: '' }])
         try {
             const form = new FormData()
             form.append('name', 'file')
@@ -49,7 +50,7 @@ const DragUpload: React.FC = () => {
                 }
                 setProgress(p => p + size)
             }, 400)
-            await axios.post('/upload', form, {
+            const { data:res } = await axios.post('/upload', form, {
                 // onUploadProgress: progress => {
                 //     console.log(progress, 123)
                 //     setProgress(Number(
@@ -57,7 +58,14 @@ const DragUpload: React.FC = () => {
                 //     ))
                 // }
             })
+            console.log(res, 'res')
             clearInterval(timer)
+            setFiles(files => files.map(item => {
+                if (item.name === file.name ) {
+                    return ({ ...item, url: res.data.url  })
+                }
+                return item
+            }))
             setProgress(100)
             message.success('上传成功')
         } catch (error) {
@@ -85,16 +93,17 @@ const DragUpload: React.FC = () => {
         e.preventDefault()
         el.current!.style.borderColor = '#ccc'
         const uploadFile = e.dataTransfer?.files[0]
+        uploadFile(uploadFile)
 
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(uploadFile!);
-        fileReader.onload = e => {
-            // 获取得到的结果
-            const data = e.target!.result
-            setFiles([...files, { name: uploadFile.name, url: data as string }])
-            setProgress(0)
-            uploadFile(uploadFile)
-        }
+        // const fileReader = new FileReader();
+        // fileReader.readAsDataURL(uploadFile!);
+        // fileReader.onload = e => {
+        //     // 获取得到的结果
+        //     const data = e.target!.result
+        //     // setFiles([...files, { name: uploadFile.name, url: data as string }])
+        //     setProgress(0)
+        //     uploadFile(uploadFile, data as string)
+        // }
     }
 
     /** 容器被点击 */
@@ -119,11 +128,12 @@ const DragUpload: React.FC = () => {
             </div>
             <div className={style.preview}>
                 {files.map((file, idx) => (
-                    <div key={file.url} className={style.item}>
-                        <img src={file.url} alt="" />
+                    <div key={idx} className={style.item}>
+                        <img src={file?.url} alt="" />
                         <div className={style.info}>
                             <div className={style.name}>{file.name}</div>
                             <Progress percent={idx === files.length - 1 ? progress : 100} />
+                            <div className={style.name}>{file?.url}</div>
                         </div>
                     </div>
                     
