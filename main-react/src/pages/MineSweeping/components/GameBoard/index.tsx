@@ -29,7 +29,7 @@ const getRandomXY = (row: number, column: number, res: any[]): Position => {
 }
 
 const GameBoard: React.FC = () => {
-    const row = 5, column = 5, mineSize = 5
+    const row = 15, column = 15, mineSize = 15
     const [mine, setMine] = useRecoilState(mineStatus)
     const [boxs, setBoxs] = useState<MineProps[][]>([])
     const boxsRef = useRef<MineProps[][]>([])

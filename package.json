@@ -4,7 +4,10 @@
   "description": "微前端",
   "main": "index.js",
   "scripts": {
-    "commit": "git add . && git-cz"
+    "commit": "git add . && git-cz",
+    "dev:react": "cd ./main-react && yarn vite",
+    "dev:vue": "cd ./micro-vue && yarn vite",
+    "dev": "yarn dev:vue && yarn dev:react"
   },
   "config": {
     "commitizen": {
