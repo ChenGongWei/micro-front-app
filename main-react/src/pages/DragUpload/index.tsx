@@ -36,6 +36,31 @@ const DragUpload: React.FC = () => {
         // }
     }
 
+    /** 大文件上传 */
+    const uploadEveryChunk = async (file: File, index: number): Promise<any> => {
+        const chunkSize = 1024 * 1024; // 分片宽度
+        // [ 文件名, 文件后缀 ]
+        const [fname, fext] = file.name.split('.');
+        // 获取当前片的起始字节
+        const start = index * chunkSize;
+        if (start > file.size) {
+            // 当超出文件大小，停止递归上传
+            // return mergeLargeFile(file.name);
+            return await axios.post('/merge_chunk', {
+                fileName: file.name
+            })
+        }
+        const blob = file.slice(start, start + chunkSize);
+        // 为每片进行命名
+        const blobName = `${fname}.${index}.${fext}`;
+        const blobFile = new File([blob], blobName);
+        const formData = new FormData();
+        formData.append('file', blobFile);
+        await axios.post('/upload_chunk', formData)
+        // 递归分片上传
+        return await uploadEveryChunk(file, ++index);
+    }
+
     /** 上传文件 */
     const uploadFile = async (file: File) => {
         setFiles([...files, { name: file.name, url: '' }])
@@ -46,23 +71,24 @@ const DragUpload: React.FC = () => {
             }
             setProgress(p => p + size)
         }, 400)
+
         try {
-            const form = new FormData()
-            form.append('name', 'file')
-            form.append('file', file)
+            let res:any
+            /** 如果文件大于 5mb */
+            if (file.size > 5 * 1024 * 1024) {
+                res = await uploadEveryChunk(file, 0)
+            } else {
+                const form = new FormData()
+                form.append('name', 'file')
+                form.append('file', file)
+                
+                res = await axios.post('/upload', form)
+            }
             
-            const { data:res } = await axios.post('/upload', form, {
-                // onUploadProgress: progress => {
-                //     console.log(progress, 123)
-                //     setProgress(Number(
-                //         ((progress.loaded / progress.total) * 100).toFixed(2)
-                //     ))
-                // }
-            })
             console.log(res, 'res')
             setFiles(files => files.map(item => {
                 if (item.name === file.name ) {
-                    return ({ ...item, url: 'http://localhost:3003' + res.data.url  })
+                    return ({ ...item, url: res.data.data.url  })
                 }
                 return item
             }))
