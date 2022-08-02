@@ -5,6 +5,7 @@ const Home = React.lazy(() => import('@/pages/Home'))
 const About = React.lazy(() => import('@/pages/About')) 
 const DragUpload = React.lazy(() => import('@/pages/DragUpload')) 
 const MineSweeping = React.lazy(() => import('@/pages/MineSweeping')) 
+const FormDemo = React.lazy(() => import('@/pages/FormDemo')) 
 const Vue = React.lazy(() => import('@/pages/Vue')) 
 
 export const routes = [
@@ -19,6 +20,10 @@ export const routes = [
     {
         path: '/mineSweeping',
         element: <MineSweeping />,
+    },
+    {
+        path: '/formDemo',
+        element: <FormDemo />,
     },
     {
         path: '/vue/*',

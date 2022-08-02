@@ -16,6 +16,9 @@ const Home: React.FC = () => {
                 title: '扫雷',
                 url: '/mineSweeping'
             }, {
+                title: '简易版表单',
+                url: '/formDemo'
+            }, {
                 title: 'About页',
                 url: '/about'
             }]
