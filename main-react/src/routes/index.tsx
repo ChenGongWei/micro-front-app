@@ -6,6 +6,7 @@ const About = React.lazy(() => import('@/pages/About'))
 const DragUpload = React.lazy(() => import('@/pages/DragUpload')) 
 const MineSweeping = React.lazy(() => import('@/pages/MineSweeping')) 
 const FormDemo = React.lazy(() => import('@/pages/FormDemo')) 
+const Chat = React.lazy(() => import('@/pages/Chat')) 
 const Vue = React.lazy(() => import('@/pages/Vue')) 
 
 export const routes = [
@@ -24,6 +25,10 @@ export const routes = [
     {
         path: '/formDemo',
         element: <FormDemo />,
+    },
+    {
+        path: '/chat',
+        element: <Chat />,
     },
     {
         path: '/vue/*',

@@ -19,6 +19,9 @@ const Home: React.FC = () => {
                 title: '简易版表单',
                 url: '/formDemo'
             }, {
+                title: '在线聊天',
+                url: '/chat'
+            }, {
                 title: 'About页',
                 url: '/about'
             }]

@@ -10,6 +10,26 @@ const app = new Koa()
 // 端口
 const PORT = 3003
 
+// socket
+const server = require('http').createServer(app.callback())
+const io = require('socket.io')(server)
+
+io.on('connection', socket => {
+
+    socket.emit('connected', 'connect success')
+
+    socket.on('send', data => {
+        console.log(data)
+        socket.emit('getChat', {
+            id: socket.id,
+            data,
+        })
+    })
+})
+server.listen(5000, () => {
+    console.log('5000 listen')
+})
+
 // 配置允许跨域
 app.use(async (ctx, next) => {
     ctx.set('Access-Control-Allow-Origin', '*')
