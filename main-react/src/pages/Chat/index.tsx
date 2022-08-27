@@ -61,6 +61,7 @@ const Home: React.FC = () => {
 
             socket.on("getChat", (data) => {
                 console.log(data, '消息')
+                
                 setList(list => [...list, data])
             })
 

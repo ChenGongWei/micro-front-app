@@ -18,9 +18,13 @@ io.on('connection', socket => {
 
     socket.emit('connected', 'connect success')
 
+    socket.join('public');
+
     socket.on('send', data => {
         console.log(data)
-        socket.emit('getChat', {
+        socket.to('public').emit('getChat', {
+            // 时间戳
+            timeStamp: new Date().getTime(),
             id: socket.id,
             data,
         })
